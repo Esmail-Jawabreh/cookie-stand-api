@@ -1,37 +1,78 @@
-# api-quick-start
+# Putting it All Together
 
-Template Project for starting up CRUD API with Django Rest Framework
+## Lab-34
+<br>
 
-## Customization Steps
+### Feature Tasks and Requirements
 
-- DO NOT migrate yet
-- add additional dependencies as needed
-  - Re-export requirements.txt as needed
-- change `things` folder to the app name of your choice
-- Search through entire code base for `Thing`,`Things` and `things` to modify code to use your resource
-  - `project/settings.py`
-  - `project/urls.py`
-  - App's files
-    - `views.py`
-    - `urls.py`
-    - `admin.py`
-    - `serializers.py`
-    - `permissions.py`
-  - "Front" files
-    - if including a customer facing portion of the site then update/recreate:
-      - `urls_front.py`
-      - `views_front.py`
-      - template files
-      - Make sure to update project `urls.py` to add routes to the "front".
-- Update ThingModel with fields you need
-  - Make sure to update other modules that would be affected by Model customizations. E.g. serializers, tests, etc.
-- Rename `project/.env.sample` to `.env` and update as needed
-  - To generate secret key use `python3 -c "import secrets; print(secrets.token_urlsafe())"`
-- Run makemigrations and migrate commands when ready.
-- Run `python manage.py collectstatic`
-  - This repository includes static assets in repository. If you are using a Content Delivery Network then remove `staticfiles` from repository.
-- Optional: Update `api_tester.py`
+#### Choice 1: Use your own Template/s
+- If you’ve built a template repository for your Django sites, or APIs, or both - now’s the time to put them to work.
+- See what it would take to combine the two approaches into one starter kit to rule them all.
 
-## Database
+<br>
 
-**NOTE:** If you are using Postgres instead of SQLite then make sure to install `psycopg2-binary` and include in `requirements.txt`
+#### Choice 2: Use API Quick Start Template
+##### The API Quick Start is a built out skeleton project with lots of the tools we’ve been using in class. Check it out. If you like it, use it. But better yet, use it as an inspiration to build your own that’s a perfect fit.
+
+- WARNING: 
+  ##### There is no guarantee that the API Quick Start is a perfect fit for your needs, is bug free, etc. It’s a great jumping off point though. And if you spot any bugs or have ideas for improvements make a PR!
+
+<br>
+
+- Modify your application paying close attention to the instructions in README.md found in root of repository.
+  - Install from requirements.txt.
+  - Export (aka freeze) requirements.
+  - Change things app folder to be cookie_stands
+  - Go through code base looking for Thing,thing and things change to cookie-stand related names.
+  - E.g. Thing model becomes CookieStand
+  - E.g. ThingList becomes CookieStandList
+
+<br>
+
+- Pro Tip: Do a global text search looking for thing
+  - Search should be case insensitive.
+  - WARNING: Do NOT just cut and paste. Think through each change carefully.
+
+<br>
+
+- Create/rename .env using .env.sample as starting point.
+  - Here’s a handy way to generate a secret key
+    - python -c “import secrets; print(secrets.token_urlsafe())”
+
+<br>
+
+### CookieStand Model Details
+- The CookieStand model must contain
+```
+    location = models.CharField(max_length=256)
+    owner = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, null=True, blank=True
+    )
+    description = models.TextField(blank=True)
+    hourly_sales = models.JSONField(default=list, null=True)
+    minimum_customers_per_hour = models.IntegerField(default=0)
+    maximum_customers_per_hour = models.IntegerField(default=0)
+    average_cookies_per_sale = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.location
+```
+
+- Notice the use of JSONField.
+- Once changes are complete make migrations, migrate, and test locally.
+
+<br>
+
+#### Database Deployment Requirements
+- Host your Database at ElephantSQL
+
+<br>
+
+#### Site Deployment Requirements
+- We’ll handle deployment a little later. For now run your site locally, but the Database should be remote.
+
+<br>
+
+---
+
+<br>
